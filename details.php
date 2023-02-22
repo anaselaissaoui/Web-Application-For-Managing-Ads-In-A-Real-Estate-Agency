@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require "dabase.php";
 $Id = $_GET['id_annonce'];
 
@@ -62,13 +64,20 @@ if (mysqli_num_rows($query_run) > 0) {
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
-                            <h6 class="text-white">Visitor</h6>
+							<?php
+								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+
+									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
+								}
+								
+							?>
                         </li>
                     </ul>
                 </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>
-                <li><button class="btn w-100 bg-white"><a href="./SignIn.php" class="text-success fw-bold text-decoration-none">Sign In</a></button></li>
-            </ul>
+                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
         </div>
     </nav>
     <div class="container car d-flex justify-content-center w-75">
