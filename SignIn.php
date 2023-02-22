@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "dabase.php";
 ?>
 
@@ -26,7 +27,16 @@ require "dabase.php";
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
-                            <h6 class="text-white">Visitor</h6>
+							<?php
+								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+
+									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
+								}
+								
+							?>
                         </li>
                     </ul>
                 </li>
@@ -54,7 +64,6 @@ require "dabase.php";
 							<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 						</div>
 						<?php
-						session_start();
 
 						if (isset($_SESSION['error'])) {
 							echo $_SESSION['error'];
@@ -110,15 +119,18 @@ if (isset($_POST['submit'])) {
 			$row = mysqli_fetch_assoc($result);
 
 			if ($row['Email'] === $email && $row['Password'] === $pass) {
-				echo "Logged in!";
+				
+				$_SESSION['nom'] = $row['Name'];
 
-				// $_SESSION['nom'] = $row['nom'];
+				$_SESSION['prenome'] = $row['LName'];
 
-				// $_SESSION['pernome'] = $row['pernome'];
+				$_SESSION['id_client'] = $row['id_client'];
 
-				// $_SESSION['id_client'] = $row['id_client'];
+				// echo $_SESSION['nom'];
+				// echo $_SESSION['prenome'];
+				// echo $_SESSION['id_client'];
 
-				header("Location: index.php");
+				// header("Location: index.php");
 				// header("Location: signin.php");
 
 
