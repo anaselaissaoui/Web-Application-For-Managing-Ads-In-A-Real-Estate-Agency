@@ -5,7 +5,6 @@ if(isset($_SESSION['id_client'])){
 
     $id_client = $_SESSION['id_client'] ;
 }
-echo $id_client;
 include('dabase.php');
 // require "dabase.php";
 ?>
@@ -32,6 +31,32 @@ include('dabase.php');
     <title>Add annonce</title>
     </head>
 <body>
+    <nav class="site-nav">
+        <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
+            <a href="index.php" class="logo ms-4 rounded-circle bg-white"><img src="./img/logo.png" height="60px"></a>
+
+            <ul class="js-clone-nav me-4 align-items-center d-flex text-center site-menu">
+                <li class="justify-content-center me-4">
+                    <ul class="list-unstyled ">
+                        <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
+                        <li>
+							<?php
+								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+
+									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
+								}
+								
+							?>
+                        </li>
+                    </ul>
+                </li>
+                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
+        </div>
+    </nav>
+
 <div class="container">
 			<div class="row justify-content-center">
 			</div>
