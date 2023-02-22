@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "dabase.php";
 ?>
 <?php
@@ -59,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<link rel="shortcut icon" href="./img/logo.png" type="image/x-icon">
 	<title>Sign In</title>
 </head>
-
 <body>
 <nav class="site-nav">
         <div class="site-navigation d-flex justify-content-between fixed-top py-3 px-5 align-items-center" style="background-color:#198754;">
@@ -70,13 +70,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
-                            <h6 class="text-white">Visitor</h6>
+							<?php
+								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+
+									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
+								}
+								
+							?>
                         </li>
                     </ul>
                 </li>
                 <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
         </div>
     </nav>
+
+
 
 
 
@@ -124,7 +135,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 						<div class="form-group">
                         <button type="submit" name="send" class="form-control btn btn-success submit px-3">Sign Up</button>
-						</div>
+                    </div>
+                    <div class="have_one">
+                        <span class="have">Already have an account? <a href="./SignIn.php" class="have">Sign In</a> </span>
+                    </div>
+
 					</form>
 				</div>
 			</div>
@@ -177,4 +192,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		margin: 0px 6px;
 		font-size: 12px;
 	}
+    .have_one {
+        margin-top: 10px;
+        margin-right: 40%;
+    }
+    span.have {
+        color: #5d5d5d;
+    }
+    a.have {
+        color: #129912;
+        font-weight: 650;
+        text-decoration: none;
+    }
 </style>
