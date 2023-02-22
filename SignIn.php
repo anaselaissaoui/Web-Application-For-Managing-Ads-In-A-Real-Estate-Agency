@@ -130,7 +130,7 @@ if (isset($_POST['submit'])) {
 				// echo $_SESSION['prenome'];
 				// echo $_SESSION['id_client'];
 
-				// header("Location: index.php");
+				header("Location: index.php");
 				// header("Location: signin.php");
 
 
