@@ -1,0 +1,83 @@
+<?php
+
+// include database connection configuration
+require_once('config.php');
+
+// define variables and set to empty values
+$first_name = $last_name = $num_tel = $email = $password = $Confirm_Password = "";
+$first_name_error = $last_name_error = $num_tel_error = $email_error = $password_error = $Confirm_Password_error = "";
+
+// validate form data on submit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // sanitize input data
+  $first_name = mysqli_real_escape_string($connection, $_POST['first']);
+  $last_name = mysqli_real_escape_string($connection, $_POST['last']);
+  $num_tel = mysqli_real_escape_string($connection, $_POST['phone']);
+  $email = mysqli_real_escape_string($connection, $_POST['email']);
+  $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+  $Confirm_Password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+  
+  // validate first name
+  if (empty($first_name)) {
+    $first_name_error = "First name is required";
+  } else {
+    $first_name = test_input($first_name);
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$first_name)) {
+      $first_name_error = "Only letters and white space allowed";
+    }
+  }
+  
+  // validate last name
+  if (empty($last_name)) {
+    $last_name_error = "Last name is required";
+  } else {
+    $last_name = test_input($last_name);
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$last_name)) {
+      $last_name_error = "Only letters and white space allowed";
+    }
+  }
+  
+  // validate phone number
+  if (empty($num_tel)) {
+    $num_tel_error = "Phone number is required";
+  } else {
+    $num_tel = test_input($num_tel);
+    if (!preg_match("/^[0-9]*$/",$num_tel)) {
+      $num_tel_error = "Only numbers allowed";
+    }
+  }
+  
+  // validate email
+  if (empty($email)) {
+    $email_error = "Email is required";
+  } else {
+    $email = test_input($email);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $email_error = "Invalid email format";
+    }
+  }
+  
+  // validate password
+  if (empty($_POST["password"])) {
+    $password_error = "Password is required";
+  } else {
+    if ($_POST["password"] !== $_POST["Confirm_Password"]) {
+      $password_error = "Passwords do not match";
+    } else {
+      $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    }
+  }
+  
+  // if all input data is valid, prepare and execute SQL statement
+  if (empty($first_name_error) && empty($last_name_error) && empty($num_tel_error) && empty($email_error) && empty($password_error) && empty($Confirm_Password_error)) {
+    $insert = "INSERT INTO clients (first_name, last_name, num_tel, email, password) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $insert);
+    mysqli_stmt_bind_param($stmt, "sssss", $first_name, $last_name, $num_tel, $email, $password);
+    mysqli_stmt_execute($stmt);
+
+    // check for errors
+    if (mysqli_errno($connection)) {
+      $error_message = "Database error: " . mysqli_error($connection);
+      // handle the error appropriately
+   
+b
