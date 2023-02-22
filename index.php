@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 require "dabase.php";
 ?>
 
@@ -34,7 +36,17 @@ require "dabase.php";
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
-                            <h6 class="text-white">Visitor</h6>
+                            <?php
+								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+
+									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
+								}
+								
+							?>
+                           
                         </li>
                     </ul>
                 </li>
