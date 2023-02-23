@@ -27,20 +27,12 @@ require "dabase.php";
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
-							<?php
-								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
-
-									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
-								}else{
-									echo"<h6 class='text-white'>Visitor</h6>";
-
-								}
-								
-							?>
-                        </li>
-                    </ul>
-                </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
+							<h6 class='text-white'>Visitor</h6>							
+						</li>
+					</ul>
+				</li>
+				<li class='me-2'><button class='btn w-100 bg-white'><a href='./SignUp.php' class='text-success fw-bold text-decoration-none'>Sign Up</a></button></li>            
+			</ul>
         </div>
     </nav>
 
@@ -65,15 +57,68 @@ require "dabase.php";
 						</div>
 						<?php
 
-						if (isset($_SESSION['error'])) {
-							echo $_SESSION['error'];
-							unset($_SESSION['error']);
-						}
+						
 						?>
 						<div class="form-group">
 							<button type="submit" name="submit" class="form-control btn btn-success submit px-3">Sign In</button>
 						</div>
-					</form>
+					
+
+
+<?php
+
+
+if (isset($_POST['submit'])) {
+
+	$email = $_POST['email'];
+	$pass = $_POST['password'];
+	$email = mysqli_real_escape_string($conn, $email);
+	$password = mysqli_real_escape_string($conn, $pass);
+	echo md5($password);
+	
+
+
+	//check if the input in email format
+	if (empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		$error = "<div class='error'>*Your Email is required, try again.</div>";
+	} 
+	else if (empty($pass)) {
+
+		$error = "<div class='error'>*Password is required.</div>";
+	} else {
+		$sql = "SELECT * FROM `client` WHERE Email='$email' AND Password='$password'";
+
+		$result = mysqli_query($conn, $sql);
+
+		if (mysqli_num_rows($result) === 1) {
+			$row = mysqli_fetch_assoc($result);
+
+
+			if ($row['Email'] === $email && $row['Password'] === md5($password)) {
+				// 
+				$_SESSION['nom'] = $row['Name'];
+				$_SESSION['prenome'] = $row['LName'];
+				$_SESSION['id_client'] = $row['id_client'];
+				header("Location: index.php");
+			} else {
+				$error = "<div class='error'>*the Email or the Password incorrect, try again.</div>";
+			}
+		} else {
+
+			$error = "<div class='error'>*the Email and the Password incorrect, try again.</div>";
+		}
+	}
+}
+
+if (!empty($error)) {
+	echo $error;
+	unset($error);
+}
+
+
+?>
+
+</form>
 				</div>
 			</div>
 		</div>
@@ -81,79 +126,6 @@ require "dabase.php";
 </body>
 
 </html>
-
-
-<?php
-
-
-if (isset($_POST['submit'])) {
-	function validate($data)
-	{
-
-		$data = trim($data);
-
-		$data = stripslashes($data);
-
-		$data = htmlspecialchars($data);
-
-		return $data;
-	}
-
-	$email = validate($_POST['email']);
-	$pass = validate($_POST['password']);
-
-	if (empty($email)) {
-
-		// header("Location: signin.php?error=User Name is required");
-		$_SESSION['error'] = "<div class='error'>*Your Email is required.</div>";
-	} else if (empty($pass)) {
-
-		// header("Location: signin.php?error=Password is required");
-		$_SESSION['error'] = "<div class='error'>*Password is required.</div>";
-	} else {
-		$sql = "SELECT * FROM `client` WHERE Email='$email' AND Password='$pass'";
-
-		$result = mysqli_query($conn, $sql);
-
-		if (mysqli_num_rows($result) === 1) {
-			$row = mysqli_fetch_assoc($result);
-
-			if ($row['Email'] === $email && $row['Password'] === $pass) {
-				
-				$_SESSION['nom'] = $row['Name'];
-
-				$_SESSION['prenome'] = $row['LName'];
-
-				$_SESSION['id_client'] = $row['id_client'];
-
-				// echo $_SESSION['nom'];
-				// echo $_SESSION['prenome'];
-				// echo $_SESSION['id_client'];
-
-				header("Location: index.php");
-				// header("Location: signin.php");
-
-
-
-			} else {
-				// header("Location: signin.php?error=Incorect User name or password");
-				$_SESSION['error'] = "<div class='error'>*Incorect email or password.</div>";
-			}
-		} else {
-
-			// header("Location: signin.php?error=Incorect User name or password");
-			$_SESSION['error'] = "<div class='error'>*Incorect email or password.</div>";
-		}
-	}
-}
-// else{
-// 	header("Location: signin.php");
-// 	exit();
-// }
-
-
-?>
-
 
 
 
