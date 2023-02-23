@@ -37,13 +37,18 @@ require "dabase.php";
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
                         <li>
                             <?php
-								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
+																if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
 
 									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
 								}else{
 									echo"<h6 class='text-white'>Visitor</h6>";
 
+                                  					 echo "<li class='me-2'><button class='btn w-100 bg-white'><a href='./SignUp.php' class='text-success fw-bold text-decoration-none'>Sign Up</a></button></li>";
+                                  					 echo "<li><button class='btn w-100 bg-white'><a href='./SignIn.php' class='text-success fw-bold text-decoration-none'>Sign In</a></button></li>";
+
 								}
+								
+
 								
 							?>
                            
