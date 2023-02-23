@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$error = 'Invalid email format';
 	} else {
 		$select = "SELECT * FROM client WHERE Email = '$Email'";
-		$q = mysqli_query($conn, $select);
-		if (mysqli_num_rows($q) > 0) {
+		$q1 = mysqli_query($conn, $select);
+		if (mysqli_num_rows($q1) > 0) {
 			$error = 'Email already exists in the database';
 		} else {
 			// Sanitize input data
@@ -33,12 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			// Insert data into the database
 			$insert = "INSERT INTO client (LName, Name, PhoneN, Email, Password) 
 					   VALUES ('$LName', '$Name', '$PhoneN', '$Email', '$Password')";
-			$q = mysqli_query($conn, $insert);
+			$q2 = mysqli_query($conn, $insert);
 	
 			// Check if the insertion was successful
-			if (!$q) {
+			if (!$q2) {
 				$error = 'Error inserting data into the database: ' . mysqli_error($conn);
 			}
+			header("Location: SignIn.php");
+
 		}
 	}
 	
@@ -69,21 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li class="justify-content-center me-4">
                     <ul class="list-unstyled ">
                         <li><img src="./img/visitorIcon.png" class="border border-3 rounded-circle" height="30px"></li>
-                        <li>
-							<?php
-								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
-
-									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
-								}else{
-									echo"<h6 class='text-white'>Visitor</h6>";
-
-								}
-								
-							?>
+                        <li>							
+							<h6 class='text-white'>Visitor</h6>						
                         </li>
                     </ul>
                 </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
+                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignIn.php" class="text-success fw-bold text-decoration-none">Sign In</a></button></li>            </ul>
         </div>
     </nav>
 
