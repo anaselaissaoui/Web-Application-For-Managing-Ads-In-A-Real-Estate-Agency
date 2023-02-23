@@ -44,16 +44,12 @@ include('dabase.php');
 								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
 
 									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
-								}else{
-									echo"<h6 class='text-white'>Visitor</h6>";
-
 								}
 								
 							?>
                         </li>
                     </ul>
                 </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
         </div>
     </nav>
 
@@ -213,7 +209,7 @@ include('dabase.php');
          mysqli_query($conn, $sql2);
 
         if (move_uploaded_file($image_location1,'img/'.$image_name1)) {
-            echo "<script>alert('Product uploaded successfully')</script>";
+            // echo "<script>alert('Product uploaded successfully')</script>";
         }
 
     }
