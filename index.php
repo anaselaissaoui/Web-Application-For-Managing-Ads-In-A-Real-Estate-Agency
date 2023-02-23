@@ -55,8 +55,7 @@ require "dabase.php";
                         </li>
                     </ul>
                 </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>
-                <li><button class="btn w-100 bg-white"><a href="./SignIn.php" class="text-success fw-bold text-decoration-none">Sign In</a></button></li>
+                
             </ul>
         </div>
     </nav>
