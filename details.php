@@ -66,18 +66,19 @@ if (mysqli_num_rows($query_run) > 0) {
                         <li>
 							<?php
 								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
-
-									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
-								}else{
-									echo"<h6 class='text-white'>Visitor</h6>";
-
-								}
+                                    echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+                                }else{
+                                    echo"<h6 class='text-white'>Visitor</h6>";                                
+                                    echo "<li class='me-2'><button class='btn w-100 bg-white'><a href='./SignUp.php' class='text-success fw-bold text-decoration-none'>Sign Up</a></button></li>";
+                                    echo "<li><button class='btn w-100 bg-white'><a href='./SignIn.php' class='text-success fw-bold text-decoration-none'>Sign In</a></button></li>";
+                                
+                                }
 								
 							?>
                         </li>
                     </ul>
                 </li>
-                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
+                 </ul>
         </div>
     </nav>
     <div class="container car d-flex justify-content-center w-75">
