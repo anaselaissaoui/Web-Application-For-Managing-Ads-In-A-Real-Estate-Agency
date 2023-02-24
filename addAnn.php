@@ -44,12 +44,16 @@ include('dabase.php');
 								if(isset($_SESSION['nom']) && isset($_SESSION['prenome'])){
 
 									echo "<h6 class='text-white'>". $_SESSION['nom'] ." ". $_SESSION['prenome'] . "</h6>";
+								}else{
+									echo"<h6 class='text-white'>Visitor</h6>";
+
 								}
 								
 							?>
                         </li>
                     </ul>
                 </li>
+                <li class="me-2"><button class="btn w-100 bg-white"><a href="./SignUp.php" class="text-success fw-bold text-decoration-none">Sign Up</a></button></li>            </ul>
         </div>
     </nav>
 
@@ -189,31 +193,65 @@ include('dabase.php');
 
 
 
-    if (!isset($title) || !isset($city)||!isset($address) || !isset($price) || !isset($surface) || !isset($offDate) || !isset($category) || !isset($type)|| !isset($IMAGE1)) {
+    if (empty($title) || empty($city)||empty($address) || empty($price) || empty($surface) || empty($offDate) || empty($category) || empty($type)|| empty($IMAGE1)) {
        echo '**please enter all the values ....';
-   }
-   
-    else {
+   }else {
        $sql1 = "INSERT INTO annonce(Title, Surface, City, Price, offerDate, id_client , Address, Category,  offerType)
        VALUES('$title', '$surface','$city',  '$price', '$offDate', '$id_client', '$address' ,'$category', '$type')";
         mysqli_query($conn, $sql1);
 
         $id_annonce = mysqli_insert_id($conn); #get id from annonce table
 
-        $sql2 = "INSERT INTO images(image, is_Principale, id_annonce)
-        VALUES('$image_up1', TRUE, $id_annonce),
-        ('$image_up2', FALSE,$id_annonce),
-        ('$image_up3', FALSE, $id_annonce),
-        ('$image_up4', FALSE, $id_annonce)
-        ";
-         mysqli_query($conn, $sql2);
+        $sql2 = "INSERT INTO images(image, is_Principale, id_annonce) VALUES";
+
+$hasImage = false;
+
+if (!empty($IMAGE1) && !empty($IMAGE1['tmp_name']) && getimagesize($IMAGE1['tmp_name'])) {
+    $sql2 .= "('" . $image_up1 . "', TRUE, $id_annonce)";
+    $hasImage = true;
+}
+
+if (!empty($IMAGE2) && !empty($IMAGE2['tmp_name']) && getimagesize($IMAGE2['tmp_namef'])) {
+    if ($hasImage) {
+        $sql2 .= ",";
+    }
+    $sql2 .= "('" . $image_up2 . "', FALSE, $id_annonce)";
+    $hasImage = true;
+}
+
+if (!empty($IMAGE3) && !empty($IMAGE3['tmp_name']) && getimagesize($IMAGE3['tmp_name'])) {
+    if ($hasImage) {
+        $sql2 .= ",";
+    }
+    $sql2 .= "('" . $image_up3 . "', FALSE, $id_annonce)";
+    $hasImage = true;
+}
+
+if (!empty($IMAGE4) && !empty($IMAGE4['tmp_name']) && getimagesize($IMAGE4['tmp_name'])) {
+    if ($hasImage) {
+        $sql2 .= ",";
+    }
+    $sql2 .= "('" . $image_up4 . "', FALSE, $id_annonce)";
+    $hasImage = true;
+}
+
+if (!$hasImage) {
+    // If no valid images were uploaded, you could either:
+    // 1. Display an error message to the user
+    // 2. Insert a default image into the database
+}
+
+$sql2 .= ";";
+
+mysqli_query($conn, $sql2);
+
 
         if (move_uploaded_file($image_location1,'img/'.$image_name1)) {
             // echo "<script>alert('Product uploaded successfully')</script>";
         }
 
+        // header('location: profile.php');  # return page addAnn.php
     }
-    header('location: addAnn.php');  # return page addAnn.php
     
 }
 ?>
